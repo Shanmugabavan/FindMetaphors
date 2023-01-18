@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+
+
+
+    
+</head>
+<body>
+	<div class="s006">
+		<form action="http://127.0.0.1:5000/search" method="post">
+            <div class="row">
+                <div class="col">
+                    <label for="Composer">Composer:</label>
+                    <select name="Composer" class="form-select" id="Composer">
+                    <option value="none" >None</option>
+                    <option value="arrahman">ஏ. ஆர். ரஹ்மான்</option>
+                    <option value="ilayaraja">இளையராஜா</option>
+                    <option value="imman">இமான்</option>
+                    <option value="yuvan">யுவன்</option>
+                    </select>
+                </div>
+                
+                <div class="col">
+                    <label for="Lyricist">Lyricist:</label>
+                    <select name="Lyricist" class="form-select" id="Lyricist">
+                    <option value="none">None</option>	
+                    <option value="vairamuthu">வைரமுத்து</option>
+                    <option value="vaali">வாலி</option>
+                    <option value="na.muthukumar">நா. முத்துக்குமார்</option>
+                    <option value="damarai">தாமரை</option>
+                    <option value="yugaparathi">யுகபாரதி</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="Singer" >Singer:</label>
+                    <select name="Singer" class="form-select" id="Singer">
+                    <option value="none">None</option>
+                    <option value="smt">சங்கர் மகாதேவன்</option>
+                    <option value="karthik">கார்த்திக்</option>
+                    <option value="hariharan">ஹரிகரன்</option>
+                    <option value="gosal">ஷ்ரேயா கோசல்</option>
+                    <option value="spb">S.P பாலசுப்ரமணியம்</option>
+                    </select>                   
+                </div>
+                
+                <div class="col">
+                    <label for="Start Year">Start Year:</label>
+                    <select name="start_year" id="start_year" class="form-select"></select>
+                </div>
+
+                <div class="col">
+                    <label for="End Year">End Year:</label>
+                    <select name="end_year" id="end_year" class="form-select"></select>
+                </div>  
+            </div>
+			
+			<br>
+            <div class="row">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="basic" name="basic" value="Basic" checked>
+                        <label class="form-check-label" for="basic">
+                          Phrase matching
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="basic" name="basic" value="Simple" checked>
+                        <label class="form-check-label" for="basic">
+                          Search by Filters
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="advanced" name="basic" value="Advanced">
+                        <label class="advanced" for="advanced">
+                          Advanced Searching (Metaphors)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                        <input type="text"  id="searchTerm" placeholder="What are you looking for?" name="searchTerm" class="form-control">
+                </div>  
+                <div class="col">
+                        <button type="submit" class="btn btn-primary" class="form-control">Search</button>
+                </div>
+                </div>
+
+            </div>
+		</form>
+
+		{% if hits %}
+		<hgroup class="mb20">
+			<h1>Search Results</h1>
+			<h2 class="lead" id="results"><strong class="text-danger">{{ num_results }}</strong> results were found </h2>
+            {% if query["Year"] %}
+            <div class="card-body">
+                <ul class="list-group">
+                    <div class="row">
+                        <div class="col"><li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Composer: </strong> {{ query["Composer"] }} </span></li></div>
+                        <div class="col"><li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Lyricist: </strong> {{ query["Lyricist"] }} </span></li></div>
+                        <div class="col"><li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Singer: </strong> {{ query["Singer"] }} </span></li></div>
+                        <div class="col"><li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Start Date: </strong> {{ query["Year"]["gte"] }} </span></li></div>
+                        <div class="col"><li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>End Date: </strong> {{ query["Year"]["lte"] }} </span></li></div>
+                    </div>
+                    
+                </ul>
+            </div>
+            {% endif %}
+			<h2 class="lead" id="results"> Time <strong class="text-danger">({{  time  }}ms)</strong></h2>
+		</hgroup>
+		<h4><span>Results: </span><ul id="tags" style="display: inline-block"></ul></h4>
+		
+		<section id='song_section' class="row justify-content-md-center">
+			{% for hit in hits %}
+			<p>
+                <article class="search-result row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title text-success">{{ hit._source["Song Name"] }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                            
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Name: </strong> {{ hit._source["Song Name"] }} </span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Album: </strong>{{ hit._source["Album"]  }}</span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Composer: </strong>{{ hit._source["Composer"]  }} </span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Singer: </strong>{{ hit._source["Singer"]   }} </span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Lyricist: </strong>{{ hit._source["Lyricist"]  }}</span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Lyrics: </strong><br>{{ hit._source["Lyrics"]  }} </span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Composer: </strong>{{ hit._source["Composer"]  }} </span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Year: </strong>{{ hit._source["Year"]   }} </span></li>
+                                    
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Metaphor: </strong>{{ hit._source["Metaphor"] }}</span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Type of Metaphor: </strong>{{ hit._source["Type of Metaphor"] }}</span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Source Domain: </strong>{{ hit._source["Source Domain"]  }}</span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Target Domain: </strong>{{ hit._source["Target Domain"]  }}</span></li>
+                                    <li class="list-group-item"><i class="glyphicon glyphicon-tags"></i> <span><strong>Interpretation: </strong>{{ hit._source["Interpretation"]  }}</span></li>
+                                </ul>
+                              
+                              
+                            </div>
+                          </div>
+                        
+                    </div>
+                </article>
+            </p>
+			{% endfor %}
+		</section>
+		
+
+		{% else %}
+			{% if init %}
+				<hgroup class="mb20">
+				<h1>Actors Search Engine </h1>
+				<h2 class="lead">Please enter the search query in the box</strong></h2>
+			</hgroup>
+			{% else %}
+			<hgroup class="mb20">
+				<h1>Search Results</h1>
+				<h2 class="lead"><strong class="text-danger">0</strong> results were found <strong class="text-danger">{{  query  }}</strong></h2>
+			</hgroup>
+			{% endif %}
+		{% endif %}
+	</div>
+	<!-- Latest compiled and minified JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+var start = 2001;
+var end = 2015;
+var options = "";
+for(var year = start ; year <=end; year++){
+  options += "<option>"+ year +"</option>";
+}
+document.getElementById("end_year").innerHTML = options;
+
+var start = 2000;
+var end = 2015;
+var options = "";
+for (var year = start; year <= end; year++) {
+	options += "<option>" + year + "</option>";
+}
+
+
+document.getElementById("start_year").innerHTML = options;
+	</script>
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+</html>
