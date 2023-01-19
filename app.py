@@ -73,11 +73,11 @@ def hello_world():
         # aggs = res['aggregations']
         num_results =  res['hits']['total']['value']
 
-        return render_template('result2.html', query=fields, hits=hits, num_results=num_results,time=time)
+        return render_template('search.html', query=fields, hits=hits, num_results=num_results,time=time)
 
     if request.method == 'GET':
         # pdb.set_trace()
-        return render_template('result2.html', init='True')
+        return render_template('search.html', init='True')
 
 
 if __name__ == '__main__':

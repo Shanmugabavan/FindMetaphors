@@ -1,0 +1,34 @@
+GET ${exampleVariable1} // _search
+{
+"query": {
+    "bool" : {
+      "must" : [
+        {"term" : { "Composer" : "இமான்" }}
+ 	            ]
+    }
+ }
+}
+
+
+GET ${exampleVariable1} // _search
+{
+"query": {
+    "bool" : {
+      "must" : [
+        {"term" : { "Composer" : "இமான்" }},
+ 	      {"term" : { "Lyricist" : "தாமரை" }}      ]
+    }
+ }
+}
+
+
+GET ${exampleVariable1} // _search
+{
+ "query": {
+    "wildcard": {
+      "Metaphor": {
+        "value": "*பெண்*"
+      }
+    }
+  }
+}
