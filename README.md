@@ -31,7 +31,7 @@
  4. Install all the dependencies - `pip install -r requirements.txt`
  5. In the `searchquery.py`edit the file accordingly - `INDEX = 'metaphors_new'`
 	    ` client = Elasticsearch("https://username:password@localhost:9200",verify_certs=False)`
-6.Edit the result.html	    
+6.Edit the search.html	    
 7. Run the python flask app
 	1. flask --app app --debug run
 	2. Copy the URL and paste to Browser and route to `/search`
